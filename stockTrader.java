@@ -39,10 +39,9 @@ public class stockTrader {
         return names[month - 1];
     }
     public static void printData(int[] years, int[] months, double[] prices) {
-        System.out.printf(
-            "%s lowest: $%.2f in %s %d%n", symbol, prices[low], monthName(months[low]), years[low]);
-        System.out.printf("%s highest: $%.2f in %s %d%n", symbol, prices[high],
-            monthName(months[high]), years[high]);
+        for (int i = 0; i < prices.length; i++) {
+            System.out.printf("$%.2f in %s %d%n", prices[i], monthName(months[i]), years[i]);
+        }
     }
     public static int indexOfLowest(double[] prices) {
         int lowestIndex = 0;
@@ -50,21 +49,34 @@ public class stockTrader {
             if (prices[i] < prices[lowestIndex]) {
                 lowestIndex = i;
             }
-            return lowestIndex;
         }
+        return lowestIndex;
     }
-}
-public static int indexOfHighest(double[] prices) {
+    public static int indexOfHighest(double[] prices) {
     int highestIndex = 0;
     for (int i = 0; i < prices.length; i++) {
         if (prices[i] > prices[highestIndex]) {
             highestIndex = i;
         }
-        return highestIndex;
     }
+    return highestIndex;    
 }
 public static final double START_CASH = 10000.0;
 public static final double FEE = 10.0;
+
+public static String decide(double[] history, boolean hasShares, double boughtAt) {
+    if (!hasShares) {
+        if (history.length >= 3 && history[history.length - 1] < history[history.length - 2]
+            && history[history.length - 2] < history[history.length - 3]) {
+            return "BUY";
+        }
+    } else {
+        if (history[history.length - 1] > boughtAt * 1.05) {
+            return "SELL";
+        }
+    }
+    return "HOLD";
+}
 
 public static double simulate(int[] years, int[] months, double[] prices) {
     double cash = START_CASH;
@@ -93,4 +105,5 @@ public static double simulate(int[] years, int[] months, double[] prices) {
         }
     }
     return cash + shares * prices[prices.length - 1];
+}
 }
