@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class stockTrader {
+public class StockTrader {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner in = new Scanner(new File("tiny.txt"));
         String symbol = in.next();
